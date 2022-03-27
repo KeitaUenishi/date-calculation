@@ -2,6 +2,7 @@ import { VFC, useState, FormEvent } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { TextField, Typography, Button } from '@material-ui/core'
+import { GetDateFormulasQuery } from '../types/generated/graphql'
 
 const Container = styled.div`
 max-width: 1200px;
@@ -40,72 +41,117 @@ const Form = styled.div`
 
 type Props = {
   isEdit?: boolean
-  dateId?: string
+  data?: {
+    dateId?: string | null;
+    dateName?: string | null;
+    adjustmentDay?: number | null;
+    adjustmentMonth?: number | null;
+    adjustmentYear?: number | null;
+  }
 }
 
-export const InputForm: VFC<Props> = ({isEdit, dateId}) => {
+export const InputForm: VFC<Props> = ({isEdit, data}) => {
   return (
     <Container>
       <Form>
         {isEdit ? (
-          <div className='contents-margin'>
-          <Typography>日付ID</Typography>
-          <TextField 
-            id="outlined-basic"
-            className="base-date-input"
-            placeholder={dateId}
-            variant="outlined"
-            disabled
-          />
-        </div>
-        ) : (
-          <div className='contents-margin'>
-            <Typography>日付ID</Typography>
+          <>
+            <div className='contents-margin'>
+              <Typography>日付ID</Typography>
+              <TextField 
+                id="outlined-basic"
+                className="base-date-input"
+                value={data.dateId}
+                variant="outlined"
+                disabled
+              />
+            </div>
+            <div className='contents-margin'>
+            <Typography>日付名</Typography>
             <TextField 
               id="outlined-basic"
               className="base-date-input"
-              placeholder="20220326"
+              value={data.dateName}
               variant="outlined"
             />
-          </div>
+            </div>
+            <div className='contents-margin'>
+              <Typography>加減値（年）</Typography>
+              <TextField 
+                id="outlined-basic"
+                className="base-date-input"
+                value={data.adjustmentYear}
+                variant="outlined"
+              />
+            </div>
+            <div className='contents-margin'>
+              <Typography>加減値（月）</Typography>
+              <TextField 
+                id="outlined-basic"
+                className="base-date-input"
+                value={data.adjustmentMonth}
+                variant="outlined"
+              />
+            </div>
+            <div className='contents-margin'>
+              <Typography>加減値（日）</Typography>
+              <TextField 
+                id="outlined-basic"
+                className="base-date-input"
+                value={data.adjustmentDay}
+                variant="outlined"
+              />
+            </div>
+            <Button variant="outlined" className="button-margin">更新</Button>
+          </>
+        ) : (
+          <>
+            <div className='contents-margin'>
+              <Typography>日付ID</Typography>
+              <TextField 
+                id="outlined-basic"
+                className="base-date-input"
+                variant="outlined"
+              />
+            </div>
+            <div className='contents-margin'>
+            <Typography>日付名</Typography>
+            <TextField 
+              id="outlined-basic"
+              className="base-date-input"
+              variant="outlined"
+            />
+            </div>
+            <div className='contents-margin'>
+              <Typography>加減値（年）</Typography>
+              <TextField 
+                id="outlined-basic"
+                className="base-date-input"
+                type="number"
+                variant="outlined"
+              />
+            </div>
+            <div className='contents-margin'>
+              <Typography>加減値（月）</Typography>
+              <TextField 
+                id="outlined-basic"
+                type="number"
+                className="base-date-input"
+                variant="outlined"
+              />
+            </div>
+            <div className='contents-margin'>
+              <Typography>加減値（日）</Typography>
+              <TextField 
+                id="outlined-basic"
+                type="number"
+                className="base-date-input"
+                variant="outlined"
+              />
+            </div>
+            <Button variant="outlined" className="button-margin">登録</Button>
+          </>
         )}
-        <div className='contents-margin'>
-          <Typography>日付名</Typography>
-          <TextField 
-            id="outlined-basic"
-            className="base-date-input"
-            placeholder="20220326"
-            variant="outlined"
-          />
-        </div>
-        <div className='contents-margin'>
-          <Typography>加減値（年）</Typography>
-          <TextField 
-            id="outlined-basic"
-            className="base-date-input"
-            placeholder="20220326"
-            variant="outlined"
-          />
-        </div>
-        <div className='contents-margin'>
-          <Typography>加減値（月）</Typography>
-          <TextField 
-            id="outlined-basic"
-            className="base-date-input"
-            placeholder="20220326"
-            variant="outlined"
-          />
-        </div>
-        <div className='contents-margin'>
-          <Typography>加減値（日）</Typography>
-          <TextField 
-            id="outlined-basic"
-            className="base-date-input"
-            placeholder="20220326"
-            variant="outlined"
-          />
-        </div>
-        <Button variant="outlined" className="button-margin">登録</Button>
         <Link href="/" passHref>
           <Button variant="outlined">戻る</Button>
         </Link>

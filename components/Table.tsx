@@ -66,7 +66,7 @@ export const BasicTable: VFC = () => {
               <TableCell align="center">計算結果</TableCell>
               <TableCell align="center">{row.adjustmentYear} / {row.adjustmentMonth} / {row.adjustmentDay}</TableCell>
               <TableCell align="center">
-              <Link href="/update" passHref>
+              <Link href={{ pathname: "/update", query: row }} passHref>
                 <Button variant="outlined">更新</Button>
               </Link>
                 <Button variant="outlined">削除</Button>
