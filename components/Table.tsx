@@ -1,5 +1,7 @@
-import { ReactNode, VFC } from "react"
+import { VFC } from "react"
 import { makeStyles } from '@material-ui/core/styles';
+import Link from 'next/link'
+
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,6 +10,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Button } from '@material-ui/core'
+import { useQuery, useMutation } from '@apollo/client'
+import { GET_DATEFORMULAS } from '../queries/queries'
+import { GetDateFormulasQuery } from '../types/generated/graphql'
 
 const useStyles = makeStyles({
   container: {
@@ -34,6 +39,9 @@ const rows = [
 
 export const BasicTable: VFC = () => {
   const classes = useStyles();
+  const { data, error } = useQuery<GetDateFormulasQuery>(GET_DATEFORMULAS, {
+    fetchPolicy: 'cache-and-network',
+  })
   return (
     <TableContainer className={classes.container} component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -43,22 +51,24 @@ export const BasicTable: VFC = () => {
             <TableCell align="center">日付ID</TableCell>
             <TableCell align="center">日付名</TableCell>
             <TableCell align="center">計算結果</TableCell>
-            <TableCell align="center">計算式（年月費）</TableCell>
+            <TableCell align="center">計算式（年月日）</TableCell>
             <TableCell align="center">編集</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.no}>
+          {data?.date_calculation_dateformula.map((row, index) => (
+            <TableRow key={index + 1}>
               <TableCell component="th" scope="row">
-                {row.no}
+                {index + 1}
               </TableCell>
               <TableCell align="center">{row.dateId}</TableCell>
               <TableCell align="center">{row.dateName}</TableCell>
-              <TableCell align="center">{row.result}</TableCell>
-              <TableCell align="center">{row.formula}</TableCell>
+              <TableCell align="center">計算結果</TableCell>
+              <TableCell align="center">{row.adjustmentYear} / {row.adjustmentMonth} / {row.adjustmentDay}</TableCell>
               <TableCell align="center">
+              <Link href="/update" passHref>
                 <Button variant="outlined">更新</Button>
+              </Link>
                 <Button variant="outlined">削除</Button>
               </TableCell>
             </TableRow>
