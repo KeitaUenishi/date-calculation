@@ -1,4 +1,4 @@
-import { VFC } from "react"
+import { VFC, useState } from "react"
 import Link from 'next/link'
 import styled from 'styled-components'
 import { TextField, Typography, Button } from '@material-ui/core'
@@ -27,6 +27,15 @@ const Container = styled.div`
 `
 
 export const FormBody: VFC = () => {
+  const [calculateDate, setCalculateDate] = useState('')
+  const getNowYMDStr = () => {
+    const date = new Date()
+    const Y = date.getFullYear()
+    const M = ("00" + (date.getMonth()+1)).slice(-2)
+    const D = ("00" + date.getDate()).slice(-2)
+    return Y + M + D
+  }
+  console.log(calculateDate)
   return (
     <Container>
       <Typography>計算の基準となる日付を入力してください。</Typography>
@@ -34,8 +43,10 @@ export const FormBody: VFC = () => {
         <TextField 
           id="outlined-basic"
           className="base-date-input"
-          placeholder="20220326"
+          placeholder={getNowYMDStr()}
           variant="outlined"
+          value={calculateDate}
+          onChangeCapture={(e) => setCalculateDate(e.target.value)}
         />
       </div>
       <Button variant="outlined" className="button-margin">計算実行</Button>
