@@ -1,3 +1,4 @@
+import React, { useState, createContext } from 'react';
 import styled from 'styled-components'
 import { BasicTable } from '../components/Table'
 import { FormBody } from '../components/FormBody'
@@ -14,12 +15,22 @@ padding-right: 15px;
   }
 `
 
+const currentUserContext = React.createContext<string | undefined>(undefined);
+
+export const DateStringContext = createContext(currentUserContext);
+
 export default function Home() {
+  const [calculateDate, setCalculateDate] = useState<any>('')
+  const changeState = (dateString) => {
+    setCalculateDate(dateString)
+  }
   return (
     <>
       <Container>
-        <FormBody />
-        <BasicTable/>
+        <DateStringContext.Provider value={calculateDate}>
+          <FormBody changeState={changeState}/>
+          <BasicTable/>
+        </DateStringContext.Provider>
       </Container>
     </>
   )

@@ -1,4 +1,4 @@
-import { VFC } from "react"
+import { useContext, VFC } from "react"
 import { makeStyles } from '@material-ui/core/styles';
 import Link from 'next/link'
 
@@ -13,6 +13,8 @@ import { Button } from '@material-ui/core'
 import { useQuery, useMutation } from '@apollo/client'
 import { GET_DATEFORMULAS } from '../queries/queries'
 import { GetDateFormulasQuery } from '../types/generated/graphql'
+
+import { DateStringContext } from "../pages";
 
 const useStyles = makeStyles({
   container: {
@@ -42,6 +44,10 @@ export const BasicTable: VFC = () => {
   const { data, error } = useQuery<GetDateFormulasQuery>(GET_DATEFORMULAS, {
     fetchPolicy: 'cache-and-network',
   })
+  const dateString = useContext(DateStringContext)
+  console.log(dateString)
+
+  // TODO: 文字列→日付型、計算と表示
   return (
     <TableContainer className={classes.container} component={Paper}>
       <Table className={classes.table} aria-label="simple table">

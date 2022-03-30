@@ -25,8 +25,11 @@ const Container = styled.div`
     margin-right: 3px;
   }
 `
+type Props = {
+  changeState: any
+}
 
-export const FormBody: VFC = () => {
+export const FormBody: VFC<Props> = ( { changeState } ) => {
   const [calculateDate, setCalculateDate] = useState('')
   const getNowYMDStr = () => {
     const date = new Date()
@@ -35,7 +38,11 @@ export const FormBody: VFC = () => {
     const D = ("00" + date.getDate()).slice(-2)
     return Y + M + D
   }
-  console.log(calculateDate)
+
+  const onSubmit = () => {
+    changeState(calculateDate)
+  }
+
   return (
     <Container>
       <Typography>計算の基準となる日付を入力してください。</Typography>
@@ -46,10 +53,11 @@ export const FormBody: VFC = () => {
           placeholder={getNowYMDStr()}
           variant="outlined"
           value={calculateDate}
-          onChangeCapture={(e) => setCalculateDate(e.target.value)}
+          onChangeCapture={(e) => 
+            setCalculateDate((e.target as HTMLTextAreaElement).value)}
         />
       </div>
-      <Button variant="outlined" className="button-margin">計算実行</Button>
+      <Button variant="outlined" className="button-margin" onClick={() => {onSubmit()}}>計算実行</Button>
       <Link href="/register" passHref>
         <Button variant="outlined">新規登録</Button>
       </Link>
